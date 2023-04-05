@@ -1,44 +1,55 @@
 package com.registrationForm;
 
+import java.sql.*;
 import java.io.IOException;
-
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class Registration implements Servlet
+public class Registration extends HttpServlet
 {
-
 	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException
+	{
+		super.doPost(req, resp);
+		System.out.println("Form For Registration ");
 		
-	}
-
-	@Override
-	public ServletConfig getServletConfig() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getServletInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void init(ServletConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
-		System.out.println("Registration Processing ");
+		String rollNo=req.getParameter("RollNo");
+		System.out.println(rollNo);
 		
+		String fName=req.getParameter("FirstName");
+		System.out.println(fName);
+		
+		String lName=req.getParameter("LastName");
+		System.out.println(lName);
+		
+		String cGrade=req.getParameter("ClassGrade");
+		System.out.println(cGrade);
+		
+		String dob=req.getParameter("DateOfBirth");
+		System.out.println(dob);
+		
+		String yoj=req.getParameter("YearOfJoining");
+		System.out.println(yoj);
+		
+		String percen=req.getParameter("Percentage");
+		System.out.println(percen);
+		
+		
+	
+	try
+	{
+		Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/school","root", "tiger");
+		String query="insert into Student values("+rollNo+",' " +fName+" ' ,'"+lName+"',' "+cGrade+" ',' "+dob+" ',' "+yoj +" ', "+percen+"   );";
+		Statement st=conn.createStatement();
+		int rs=st.executeUpdate(query);
+		System.out.println(rs);
 	}
-
-	@Override
-	public void service(ServletRequest arg0, ServletResponse arg1) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("Registration ");
+	catch (SQLException e) 
+	{
+	e.printStackTrace();
 	}
+}
 }
